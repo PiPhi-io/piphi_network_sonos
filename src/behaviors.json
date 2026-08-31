@@ -1,0 +1,24 @@
+{
+  "behaviorSchemaVersion": "integration.behaviors.v2",
+  "templates": [],
+  "devices": [{
+    "id": "sonos_speaker",
+    "name": "Sonos speaker",
+    "description": "Local Sonos playback, volume, mute, and grouping controls.",
+    "deviceClass": "speaker",
+    "entityType": "media_player",
+    "capabilities": ["connected", "playback_state", "volume_percent", "muted", "track_title", "artist", "album", "group_id", "refresh", "play", "pause", "stop", "next", "previous", "set_volume", "set_mute", "join_group", "leave_group"],
+    "targeting": {"scopes": ["config", "configs", "room", "rooms", "group", "groups", "selection"], "fanout": {"supported": true, "defaultMode": "selection", "allowedModes": ["config", "configs", "room", "rooms", "group", "groups", "selection"]}},
+    "freshness": {"maxAgeSeconds": 60, "staleDataMode": "block"},
+    "ui": {"icon": "speaker", "category": "media"},
+    "triggers": [{"id": "playback_changed", "label": "Playback state changes", "description": "Start when playback begins, pauses, or stops.", "capability": "telemetry.playback_state", "runtime": {"event": "device.state_changed", "source": "integration"}, "freshness": {"maxAgeSeconds": 60, "staleDataMode": "block"}, "ui": {"group": "when"}}],
+    "intents": [{"id": "control_playback", "label": "Control playback", "description": "Build automations around Sonos playback and volume."}],
+    "conditions": [{"id": "playback_is", "label": "Playback state is", "description": "Match the current Sonos transport state.", "type": "select", "capability": "telemetry.playback_state", "operators": ["eq", "neq"], "runtime": {"source": "state", "field": "playback_state", "operator": "eq"}, "freshness": {"maxAgeSeconds": 60, "staleDataMode": "block"}, "ui": {"group": "only_if"}, "params": [{"name": "value", "label": "Playback state", "type": "select", "required": true, "options": [{"label": "Playing", "value": "playing"}, {"label": "Paused", "value": "paused_playback"}, {"label": "Stopped", "value": "stopped"}]}]}],
+    "actions": [
+      {"id": "play", "label": "Play", "description": "Resume playback.", "capability": "action.play", "capabilityRequirements": ["action.play"], "runtime": {"command": "play", "endpoint": "/command", "method": "POST", "timeoutSeconds": 10}, "safety": {"riskLevel": "low", "requiresConfirmation": false, "liveRunAllowed": true}},
+      {"id": "pause", "label": "Pause", "description": "Pause playback.", "capability": "action.pause", "capabilityRequirements": ["action.pause"], "runtime": {"command": "pause", "endpoint": "/command", "method": "POST", "timeoutSeconds": 10}, "safety": {"riskLevel": "low", "requiresConfirmation": false, "liveRunAllowed": true}},
+      {"id": "set_volume", "label": "Set volume", "description": "Set speaker volume from 0 to 100.", "capability": "action.set_volume", "capabilityRequirements": ["action.set_volume"], "runtime": {"command": "set_volume", "endpoint": "/command", "method": "POST", "timeoutSeconds": 10}, "safety": {"riskLevel": "medium", "requiresConfirmation": false, "liveRunAllowed": true}, "params": [{"name": "volume", "label": "Volume", "type": "number", "required": true, "min": 0, "max": 100}]},
+      {"id": "set_mute", "label": "Set mute", "description": "Mute or unmute the speaker.", "capability": "action.set_mute", "capabilityRequirements": ["action.set_mute"], "runtime": {"command": "set_mute", "endpoint": "/command", "method": "POST", "timeoutSeconds": 10}, "safety": {"riskLevel": "low", "requiresConfirmation": false, "liveRunAllowed": true}, "params": [{"name": "muted", "label": "Muted", "type": "boolean", "required": true}]}
+    ]
+  }]
+}

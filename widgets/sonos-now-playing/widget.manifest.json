@@ -1,0 +1,122 @@
+{
+  "id": "io.piphi.sonos.now-playing",
+  "name": "Sonos now playing",
+  "version": "0.1.0",
+  "entry": "./dist/widget.js",
+  "binding_modes": [
+    "read",
+    "write",
+    "read-write"
+  ],
+  "value_kinds": [
+    "text",
+    "numeric",
+    "boolean",
+    "enum",
+    "command"
+  ],
+  "capability_requirements": [
+    "playback_state",
+    "volume_percent",
+    "muted",
+    "track_title",
+    "artist",
+    "album",
+    "album_art_uri",
+    "position_seconds",
+    "duration_seconds"
+  ],
+  "sdk_compatibility": {
+    "minimum": "0.3.0"
+  },
+  "conformance": {
+    "accessibility": "wcag2.2-aa",
+    "keyboard": true,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "directions": [
+      "ltr",
+      "rtl"
+    ],
+    "states": [
+      "loading",
+      "live",
+      "stale",
+      "offline",
+      "reconnecting",
+      "denied",
+      "error"
+    ]
+  },
+  "settings_schema_version": "1",
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Title",
+      "default": "Now playing"
+    },
+    {
+      "id": "speaker",
+      "type": "device",
+      "label": "Speaker",
+      "required": true
+    },
+    {
+      "id": "show_album_art",
+      "type": "boolean",
+      "label": "Show album art",
+      "default": true
+    }
+  ],
+  "layout": {
+    "min_height": 220,
+    "default_height": 340,
+    "max_height": 560
+  },
+  "previews": {
+    "light": "./previews/light.svg",
+    "dark": "./previews/dark.svg"
+  },
+  "translations": {
+    "en": {
+      "widget.title": "Now playing",
+      "widget.waiting": "Waiting for Sonos",
+      "widget.offline": "Speaker offline"
+    },
+    "es": {
+      "widget.title": "Reproduciendo",
+      "widget.waiting": "Esperando a Sonos",
+      "widget.offline": "Altavoz sin conexión"
+    },
+    "ar": {
+      "widget.title": "قيد التشغيل",
+      "widget.waiting": "في انتظار Sonos",
+      "widget.offline": "مكبر الصوت غير متصل"
+    }
+  },
+  "security": {
+    "permissions": [
+      "host.executeCommand"
+    ],
+    "allowed_commands": [
+      "play",
+      "pause",
+      "stop",
+      "next",
+      "previous",
+      "set_volume",
+      "set_mute",
+      "refresh"
+    ],
+    "sandbox": [
+      "allow-scripts"
+    ],
+    "csp": {
+      "connect_src": []
+    }
+  },
+  "integrity": "sha256-uZIjcd6KJdKEAPtq9W2ianvyWmkHECJTEtWGcU7f3lc="
+}

@@ -1,0 +1,8 @@
+{
+  "id": "sonos-living-room",
+  "config_id": "sonos-living-room",
+  "device_id": "RINCON_00000000000101400",
+  "host": "192.0.2.10",
+  "alias": "Living Room",
+  "poll_interval_seconds": 10
+}
