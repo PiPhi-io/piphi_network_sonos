@@ -1,0 +1,12 @@
+{
+  "contract_version": "automation.runtime.command.v1",
+  "command": "set_volume",
+  "target": {
+    "config_id": "sonos-living-room",
+    "device_id": "RINCON_00000000000101400",
+    "entity_id": null
+  },
+  "params": {"volume": 35},
+  "capability": "action.set_volume",
+  "capability_requirements": ["action.set_volume"]
+}

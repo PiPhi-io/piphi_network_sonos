@@ -1,0 +1,6 @@
+{
+  "inputs": {
+    "timeout": 5,
+    "interface_addr": "192.0.2.2"
+  }
+}

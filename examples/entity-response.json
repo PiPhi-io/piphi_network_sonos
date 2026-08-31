@@ -1,0 +1,18 @@
+{
+  "entities": [{
+    "id": "RINCON_00000000000101400",
+    "name": "Living Room",
+    "config_id": "sonos-living-room",
+    "device_id": "RINCON_00000000000101400",
+    "device_class": "speaker",
+    "entity_type": "media_player",
+    "capabilities": ["connected", "playback_state", "volume_percent", "muted", "track_title", "artist", "album", "album_art_uri", "position_seconds", "duration_seconds", "group_id", "refresh", "play", "pause", "stop", "next", "previous", "set_volume", "set_mute", "join_group", "leave_group"],
+    "dashboard": {
+      "allowed_widgets": ["media-control", "external-widget", "tile"],
+      "default_widget": "media-control",
+      "recommended_widgets": ["external-widget"]
+    }
+  }],
+  "capabilities": {},
+  "commands": {}
+}
