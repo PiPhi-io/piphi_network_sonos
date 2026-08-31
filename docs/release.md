@@ -14,15 +14,17 @@ The generated workflow is triggered manually from GitHub Actions. It bumps the
 semantic version, updates release metadata, commits and tags the release, builds
 a multi-architecture Docker image, pushes it, and creates a GitHub release.
 
-The release job runs on the repository's `self-hosted` runner pool. An eligible
-runner must be online and provide Linux, Git, Python, and access to a Docker
-daemon. Docker Buildx and QEMU setup must be permitted so the workflow can build
-both `linux/amd64` and `linux/arm64`, and the runner needs outbound access to
-GitHub and Docker Hub. No organization-specific runner labels are required.
+The release job runs on the `self-hosted`, `Linux`, `X64`, and
+`self-hosted-machine-1` runner labels. The runner must provide Git, Python, and
+access to a Docker daemon. Docker Buildx and QEMU setup must be permitted so the
+workflow can build both `linux/amd64` and `linux/arm64`, and the runner needs
+outbound access to GitHub and Docker Hub.
 
-Images starting with `ghcr.io/` publish to GitHub Container Registry. Images
-using `docker.io/org/image:tag` or `org/image:tag` publish to Docker Hub with
-the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repository secrets.
+Docker Hub authentication uses short-lived GitHub OIDC credentials. Configure
+the Docker organization connection for `piphinetwork`, scope its subject rules
+to this repository and release workflow, and expose its connection identifier
+as the repository variable `DOCKERHUB_OIDC_CONNECTION_ID`. No long-lived Docker
+Hub username or token secrets are used.
 
 Current image target:
 
