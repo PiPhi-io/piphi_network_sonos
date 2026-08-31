@@ -55,13 +55,13 @@
     }
   },
   "license": "Apache-2.0",
-  "image": "ghcr.io/piphi-io/piphi-network-sonos:0.1.1",
+  "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.1",
   "platforms": ["linux"],
   "runtime": {
     "linux": {
       "type": "container",
       "container": {
-        "image": "ghcr.io/piphi-io/piphi-network-sonos:0.1.1",
+        "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.1",
         "network_mode": "host",
         "ports": [{"container": 8090, "host": 8090}],
         "environment": {"LOG_LEVEL": "info", "PIPHI_WIDGET_DIR": "/app/widgets"},

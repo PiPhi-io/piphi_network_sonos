@@ -46,8 +46,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  RELEASE_IMAGE: ghcr.io/piphi-io/piphi-network-sonos
-  RELEASE_REGISTRY_KIND: ghcr
+  RELEASE_IMAGE: docker.io/piphinetwork/piphi-network-sonos
+  RELEASE_REGISTRY_KIND: dockerhub
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_USERNAME || secrets.DOCKER_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN != '' && secrets.DOCKERHUB_TOKEN || secrets.DOCKER_PASSWORD }}
 

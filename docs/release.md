@@ -18,7 +18,7 @@ The release job runs on the repository's `self-hosted` runner pool. An eligible
 runner must be online and provide Linux, Git, Python, and access to a Docker
 daemon. Docker Buildx and QEMU setup must be permitted so the workflow can build
 both `linux/amd64` and `linux/arm64`, and the runner needs outbound access to
-GitHub and `ghcr.io`. No organization-specific runner labels are required.
+GitHub and Docker Hub. No organization-specific runner labels are required.
 
 Images starting with `ghcr.io/` publish to GitHub Container Registry. Images
 using `docker.io/org/image:tag` or `org/image:tag` publish to Docker Hub with
@@ -27,5 +27,5 @@ the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repository secrets.
 Current image target:
 
 ```text
-ghcr.io/piphi-io/piphi-network-sonos:0.1.1
+docker.io/piphinetwork/piphi-network-sonos:0.1.1
 ```
