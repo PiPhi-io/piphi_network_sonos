@@ -179,13 +179,6 @@ jobs:
           mkdir -p "${docker_config}"
           echo "DOCKER_CONFIG=${docker_config}" >> "${GITHUB_ENV}"
 
-      - name: Log in to Docker Hub with OIDC
-        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
-        with:
-          username: piphinetwork
-        env:
-          DOCKERHUB_OIDC_CONNECTIONID: ${{ vars.DOCKERHUB_OIDC_CONNECTION_ID }}
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -208,6 +201,24 @@ jobs:
             org.opencontainers.image.revision=${{ steps.git.outputs.sha }}
             org.opencontainers.image.version=${{ steps.version.outputs.version }}
 
+      - name: Build image layers before short-lived login
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-to: type=local,dest=${{ runner.temp }}/piphi-sonos-build-cache,mode=max
+
+      - name: Log in to Docker Hub with OIDC
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          username: piphinetwork
+        env:
+          DOCKERHUB_OIDC_CONNECTIONID: ${{ vars.DOCKERHUB_OIDC_CONNECTION_ID }}
+
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
@@ -217,8 +228,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=min,ignore-error=true
+          cache-from: type=local,src=${{ runner.temp }}/piphi-sonos-build-cache
 
       - name: Push release commit and tag
         shell: bash
