@@ -3,7 +3,7 @@
   "manifest_version": "1.0",
   "id": "piphi-network-sonos",
   "name": "Sonos",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Discover and control Sonos S1 and S2 speakers over the local network using SoCo.",
   "metadata": {
     "generator": "piphi-network-create",
@@ -14,18 +14,36 @@
     "upstream_library_version": ">=0.31.2,<0.32.0",
     "upstream_api_status": "unofficial-local-upnp"
   },
-  "maintainer": {"name": "PiPhi Integrations Team", "website": "https://github.com/PiPhi-io"},
+  "maintainer": {
+    "name": "PiPhi Integrations Team",
+    "website": "https://github.com/PiPhi-io"
+  },
   "marketplace": {
     "brand_domain": "sonos.com",
     "metadata_version": 2,
     "display_name": "Sonos Speakers",
     "summary": "Control Sonos speakers and see what is playing across your home.",
     "category": "media",
-    "device_types": ["speaker", "soundbar", "amplifier"],
-    "protocols": ["upnp", "ssdp", "sonos_local_api"],
-    "regions": ["WW"],
-    "languages": ["en"],
-    "discovery_methods": ["ssdp", "manual"],
+    "device_types": [
+      "speaker",
+      "soundbar",
+      "amplifier"
+    ],
+    "protocols": [
+      "upnp",
+      "ssdp",
+      "sonos_local_api"
+    ],
+    "regions": [
+      "WW"
+    ],
+    "languages": [
+      "en"
+    ],
+    "discovery_methods": [
+      "ssdp",
+      "manual"
+    ],
     "connectivity": "local",
     "offline_support": "full",
     "publisher": {
@@ -34,114 +52,417 @@
       "support_url": "https://github.com/PiPhi-io/piphi_network_sonos/issues",
       "security_contact": "support@piphi.io"
     },
-    "access": [{
-      "id": "local_network", "label": "Local network access",
-      "reason": "Discovers and controls Sonos speakers on your local network.", "required": true
-    }, {
-      "id": "host_network", "label": "Host networking",
-      "reason": "Receives and sends SSDP multicast traffic needed for Sonos discovery.", "required": true
-    }],
+    "access": [
+      {
+        "id": "local_network",
+        "label": "Local network access",
+        "reason": "Discovers and controls Sonos speakers on your local network.",
+        "required": true
+      },
+      {
+        "id": "host_network",
+        "label": "Host networking",
+        "reason": "Receives and sends SSDP multicast traffic needed for Sonos discovery.",
+        "required": true
+      }
+    ],
     "compatibility": [
-      {"brand": "Sonos", "model": "S1-compatible speakers", "regions": ["WW"]},
-      {"brand": "Sonos", "model": "S2-compatible speakers", "regions": ["WW"]}
+      {
+        "brand": "Sonos",
+        "model": "S1-compatible speakers",
+        "regions": [
+          "WW"
+        ]
+      },
+      {
+        "brand": "Sonos",
+        "model": "S2-compatible speakers",
+        "regions": [
+          "WW"
+        ]
+      }
     ],
     "documentation_url": "https://github.com/PiPhi-io/piphi_network_sonos",
     "support_url": "https://github.com/PiPhi-io/piphi_network_sonos/issues",
     "changelog_url": "https://github.com/PiPhi-io/piphi_network_sonos/releases",
     "quality_tier": "unrated",
     "governance": {
-      "schema_version": 1, "publication_status": "draft", "rollout_percent": 0,
-      "lifecycle_status": "active", "qualification": {"status": "unverified"}
+      "schema_version": 1,
+      "publication_status": "draft",
+      "rollout_percent": 0,
+      "lifecycle_status": "active",
+      "qualification": {
+        "status": "unverified"
+      }
     }
   },
   "license": "Apache-2.0",
-  "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.1",
-  "platforms": ["linux"],
+  "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.2",
+  "platforms": [
+    "linux"
+  ],
   "runtime": {
     "linux": {
       "type": "container",
       "container": {
-        "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.1",
+        "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.2",
         "network_mode": "host",
-        "ports": [{"container": 8090, "host": 8090}],
-        "environment": {"LOG_LEVEL": "info", "PIPHI_WIDGET_DIR": "/app/widgets"},
-        "restart_policy": {"name": "unless-stopped", "maximum_retry_count": 0}
+        "ports": [
+          {
+            "container": 8090,
+            "host": 8090
+          }
+        ],
+        "environment": {
+          "LOG_LEVEL": "info",
+          "PIPHI_WIDGET_DIR": "/app/widgets"
+        },
+        "restart_policy": {
+          "name": "unless-stopped",
+          "maximum_retry_count": 0
+        }
       },
-      "discovery": {"method": "ssdp"}
+      "discovery": {
+        "method": "ssdp"
+      }
     }
   },
   "api": {
-    "required": ["health", "entities", "command", "config", "ui_config"],
+    "required": [
+      "health",
+      "entities",
+      "command",
+      "config",
+      "ui_config"
+    ],
     "endpoints": {
-      "health": "/health", "diagnostics": "/diagnostics", "discover": "/discover",
-      "entities": "/entities", "state": "/state", "config": "/config",
-      "config_sync": "/config/sync", "deconfigure": "/deconfigure",
-      "ui_config": "/ui-config", "events": "/events", "command": "/command"
+      "health": "/health",
+      "diagnostics": "/diagnostics",
+      "discover": "/discover",
+      "entities": "/entities",
+      "state": "/state",
+      "config": "/config",
+      "config_sync": "/config/sync",
+      "deconfigure": "/deconfigure",
+      "ui_config": "/ui-config",
+      "events": "/events",
+      "command": "/command"
     }
   },
   "config": {
-    "source": "endpoint", "endpoint": "/ui-config", "required": true,
-    "editable_fields": ["host", "alias", "poll_interval_seconds"],
-    "runtime_fields": ["id", "config_id", "container_id", "device_id"],
-    "identity_fields": ["host"]
+    "source": "endpoint",
+    "endpoint": "/ui-config",
+    "required": true,
+    "editable_fields": [
+      "host",
+      "alias",
+      "poll_interval_seconds"
+    ],
+    "runtime_fields": [
+      "id",
+      "config_id",
+      "container_id",
+      "device_id"
+    ],
+    "identity_fields": [
+      "host"
+    ]
   },
-  "identity": {"fields": ["host"]},
+  "identity": {
+    "fields": [
+      "host"
+    ]
+  },
   "capabilities": {
-    "connected": {"kind": "sensor", "unit": "bool"},
-    "playback_state": {"kind": "sensor", "unit": "state", "dashboard": {"allowed_widgets": ["media-control", "external-widget", "text"], "default_widget": "media-control", "recommended_widgets": ["external-widget"]}},
-    "volume_percent": {"kind": "sensor", "unit": "%"},
-    "muted": {"kind": "sensor", "unit": "bool"},
-    "track_title": {"kind": "sensor", "unit": "text"},
-    "artist": {"kind": "sensor", "unit": "text"},
-    "album": {"kind": "sensor", "unit": "text"},
-    "album_art_uri": {"kind": "sensor", "unit": "url"},
-    "position_seconds": {"kind": "sensor", "unit": "s"},
-    "duration_seconds": {"kind": "sensor", "unit": "s"},
-    "group_id": {"kind": "sensor", "unit": "text"},
-    "refresh": {"kind": "action"}, "play": {"kind": "action"},
-    "pause": {"kind": "action"}, "stop": {"kind": "action"},
-    "next": {"kind": "action"}, "previous": {"kind": "action"},
-    "set_volume": {"kind": "action"}, "set_mute": {"kind": "action"},
-    "join_group": {"kind": "action"}, "leave_group": {"kind": "action"}
+    "connected": {
+      "kind": "sensor",
+      "unit": "bool"
+    },
+    "playback_state": {
+      "kind": "sensor",
+      "unit": "state",
+      "dashboard": {
+        "allowed_widgets": [
+          "media-control",
+          "external-widget",
+          "text"
+        ],
+        "default_widget": "media-control",
+        "recommended_widgets": [
+          "external-widget"
+        ]
+      }
+    },
+    "volume_percent": {
+      "kind": "sensor",
+      "unit": "%"
+    },
+    "muted": {
+      "kind": "sensor",
+      "unit": "bool"
+    },
+    "track_title": {
+      "kind": "sensor",
+      "unit": "text"
+    },
+    "artist": {
+      "kind": "sensor",
+      "unit": "text"
+    },
+    "album": {
+      "kind": "sensor",
+      "unit": "text"
+    },
+    "album_art_uri": {
+      "kind": "sensor",
+      "unit": "url"
+    },
+    "position_seconds": {
+      "kind": "sensor",
+      "unit": "s"
+    },
+    "duration_seconds": {
+      "kind": "sensor",
+      "unit": "s"
+    },
+    "group_id": {
+      "kind": "sensor",
+      "unit": "text"
+    },
+    "refresh": {
+      "kind": "action"
+    },
+    "play": {
+      "kind": "action"
+    },
+    "pause": {
+      "kind": "action"
+    },
+    "stop": {
+      "kind": "action"
+    },
+    "next": {
+      "kind": "action"
+    },
+    "previous": {
+      "kind": "action"
+    },
+    "set_volume": {
+      "kind": "action"
+    },
+    "set_mute": {
+      "kind": "action"
+    },
+    "join_group": {
+      "kind": "action"
+    },
+    "leave_group": {
+      "kind": "action"
+    }
   },
   "commands": {
-    "refresh": {"description": "Refresh speaker state.", "timeout_ms": 10000},
-    "play": {"description": "Resume playback.", "timeout_ms": 10000},
-    "pause": {"description": "Pause playback.", "timeout_ms": 10000},
-    "stop": {"description": "Stop playback.", "timeout_ms": 10000},
-    "next": {"description": "Skip to the next queue item.", "timeout_ms": 10000},
-    "previous": {"description": "Return to the previous queue item.", "timeout_ms": 10000},
-    "set_volume": {"description": "Set volume from 0 to 100.", "timeout_ms": 10000},
-    "set_mute": {"description": "Mute or unmute the speaker.", "timeout_ms": 10000},
-    "join_group": {"description": "Join another Sonos coordinator by host.", "timeout_ms": 15000},
-    "leave_group": {"description": "Leave the current Sonos group.", "timeout_ms": 15000}
+    "refresh": {
+      "description": "Refresh speaker state.",
+      "timeout_ms": 10000
+    },
+    "play": {
+      "description": "Resume playback.",
+      "timeout_ms": 10000
+    },
+    "pause": {
+      "description": "Pause playback.",
+      "timeout_ms": 10000
+    },
+    "stop": {
+      "description": "Stop playback.",
+      "timeout_ms": 10000
+    },
+    "next": {
+      "description": "Skip to the next queue item.",
+      "timeout_ms": 10000
+    },
+    "previous": {
+      "description": "Return to the previous queue item.",
+      "timeout_ms": 10000
+    },
+    "set_volume": {
+      "description": "Set volume from 0 to 100.",
+      "timeout_ms": 10000
+    },
+    "set_mute": {
+      "description": "Mute or unmute the speaker.",
+      "timeout_ms": 10000
+    },
+    "join_group": {
+      "description": "Join another Sonos coordinator by host.",
+      "timeout_ms": 15000
+    },
+    "leave_group": {
+      "description": "Leave the current Sonos group.",
+      "timeout_ms": 15000
+    }
   },
-  "entities": [{
-    "id": "sonos-speaker", "name": "Sonos speaker", "device_id": "sonos-speaker",
-    "device_class": "speaker", "entity_type": "media_player",
-    "capabilities": ["connected", "playback_state", "volume_percent", "muted", "track_title", "artist", "album", "album_art_uri", "position_seconds", "duration_seconds", "group_id", "refresh", "play", "pause", "stop", "next", "previous", "set_volume", "set_mute", "join_group", "leave_group"],
-    "available_commands": [
-      {"id": "refresh", "label": "Refresh speaker state", "kind": "action"},
-      {"id": "play", "label": "Resume playback", "kind": "action"},
-      {"id": "pause", "label": "Pause playback", "kind": "action"},
-      {"id": "stop", "label": "Stop playback", "kind": "action"},
-      {"id": "next", "label": "Skip to the next queue item", "kind": "action"},
-      {"id": "previous", "label": "Return to the previous queue item", "kind": "action"},
-      {"id": "set_volume", "label": "Set volume from 0 to 100", "kind": "action"},
-      {"id": "set_mute", "label": "Mute or unmute the speaker", "kind": "action"},
-      {"id": "join_group", "label": "Join another Sonos coordinator by host", "kind": "action"},
-      {"id": "leave_group", "label": "Leave the current Sonos group", "kind": "action"}
-    ],
-    "dashboard": {"allowed_widgets": ["media-control", "external-widget", "tile"], "default_widget": "media-control", "recommended_widgets": ["external-widget"]}
-  }],
-  "ui": {"widget_packages": [{
-    "id": "io.piphi.sonos.now-playing", "name": "Sonos now playing", "version": "0.1.0",
-    "entry": "/widgets/sonos-now-playing/dist/widget.js", "runtime": "prebuilt_bundle",
-    "host_bridge": {"protocol": "piphi.widget.host", "version": "1", "events": ["ready", "resize"]},
-    "binding_modes": ["read", "write", "read-write"],
-    "value_kinds": ["text", "numeric", "boolean", "enum", "command"],
-    "capability_requirements": ["playback_state", "volume_percent", "muted", "track_title", "artist", "album", "album_art_uri", "position_seconds", "duration_seconds"],
-    "layout": {"min_height": 220, "default_height": 340, "max_height": 560},
-    "security": {"permissions": ["host.executeCommand"], "allowed_commands": ["play", "pause", "stop", "next", "previous", "set_volume", "set_mute", "refresh"], "sandbox": ["allow-scripts"], "csp": {"connect_src": []}}
-  }]}
+  "entities": [
+    {
+      "id": "sonos-speaker",
+      "name": "Sonos speaker",
+      "device_id": "sonos-speaker",
+      "device_class": "speaker",
+      "entity_type": "media_player",
+      "capabilities": [
+        "connected",
+        "playback_state",
+        "volume_percent",
+        "muted",
+        "track_title",
+        "artist",
+        "album",
+        "album_art_uri",
+        "position_seconds",
+        "duration_seconds",
+        "group_id",
+        "refresh",
+        "play",
+        "pause",
+        "stop",
+        "next",
+        "previous",
+        "set_volume",
+        "set_mute",
+        "join_group",
+        "leave_group"
+      ],
+      "available_commands": [
+        {
+          "id": "refresh",
+          "label": "Refresh speaker state",
+          "kind": "action"
+        },
+        {
+          "id": "play",
+          "label": "Resume playback",
+          "kind": "action"
+        },
+        {
+          "id": "pause",
+          "label": "Pause playback",
+          "kind": "action"
+        },
+        {
+          "id": "stop",
+          "label": "Stop playback",
+          "kind": "action"
+        },
+        {
+          "id": "next",
+          "label": "Skip to the next queue item",
+          "kind": "action"
+        },
+        {
+          "id": "previous",
+          "label": "Return to the previous queue item",
+          "kind": "action"
+        },
+        {
+          "id": "set_volume",
+          "label": "Set volume from 0 to 100",
+          "kind": "action"
+        },
+        {
+          "id": "set_mute",
+          "label": "Mute or unmute the speaker",
+          "kind": "action"
+        },
+        {
+          "id": "join_group",
+          "label": "Join another Sonos coordinator by host",
+          "kind": "action"
+        },
+        {
+          "id": "leave_group",
+          "label": "Leave the current Sonos group",
+          "kind": "action"
+        }
+      ],
+      "dashboard": {
+        "allowed_widgets": [
+          "media-control",
+          "external-widget",
+          "tile"
+        ],
+        "default_widget": "media-control",
+        "recommended_widgets": [
+          "external-widget"
+        ]
+      }
+    }
+  ],
+  "ui": {
+    "widget_packages": [
+      {
+        "id": "io.piphi.sonos.now-playing",
+        "name": "Sonos now playing",
+        "version": "0.1.0",
+        "entry": "/widgets/sonos-now-playing/dist/widget.js",
+        "runtime": "prebuilt_bundle",
+        "host_bridge": {
+          "protocol": "piphi.widget.host",
+          "version": "1",
+          "events": [
+            "ready",
+            "resize"
+          ]
+        },
+        "binding_modes": [
+          "read",
+          "write",
+          "read-write"
+        ],
+        "value_kinds": [
+          "text",
+          "numeric",
+          "boolean",
+          "enum",
+          "command"
+        ],
+        "capability_requirements": [
+          "playback_state",
+          "volume_percent",
+          "muted",
+          "track_title",
+          "artist",
+          "album",
+          "album_art_uri",
+          "position_seconds",
+          "duration_seconds"
+        ],
+        "layout": {
+          "min_height": 220,
+          "default_height": 340,
+          "max_height": 560
+        },
+        "security": {
+          "permissions": [
+            "host.executeCommand"
+          ],
+          "allowed_commands": [
+            "play",
+            "pause",
+            "stop",
+            "next",
+            "previous",
+            "set_volume",
+            "set_mute",
+            "refresh"
+          ],
+          "sandbox": [
+            "allow-scripts"
+          ],
+          "csp": {
+            "connect_src": []
+          }
+        }
+      }
+    ]
+  }
 }
