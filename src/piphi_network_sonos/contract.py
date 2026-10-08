@@ -27,7 +27,7 @@ CAPABILITIES: dict[str, dict[str, Any]] = {
     "group_id": {"kind": "sensor", "unit": "text"},
     **{name: {"kind": "action"} for name in (
         "refresh", "play", "pause", "stop", "next", "previous",
-        "set_volume", "set_mute", "join_group", "leave_group",
+        "play_media", "set_volume", "set_mute", "join_group", "leave_group",
     )},
 }
 
@@ -38,6 +38,7 @@ COMMANDS: dict[str, dict[str, Any]] = {
     "stop": {"description": "Stop playback.", "timeout_ms": 10000},
     "next": {"description": "Skip to the next queue item.", "timeout_ms": 10000},
     "previous": {"description": "Return to the previous queue item.", "timeout_ms": 10000},
+    "play_media": {"description": "Play a signed PiPhi Library audio stream.", "timeout_ms": 15000},
     "set_volume": {"description": "Set volume from 0 to 100.", "timeout_ms": 10000},
     "set_mute": {"description": "Mute or unmute the speaker.", "timeout_ms": 10000},
     "join_group": {"description": "Join another Sonos coordinator by host.", "timeout_ms": 15000},

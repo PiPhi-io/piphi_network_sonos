@@ -3,7 +3,7 @@
   "manifest_version": "1.0",
   "id": "piphi-network-sonos",
   "name": "Sonos",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Discover and control Sonos S1 and S2 speakers over the local network using SoCo.",
   "metadata": {
     "generator": "piphi-network-create",
@@ -55,13 +55,13 @@
     }
   },
   "license": "Apache-2.0",
-  "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.1",
+  "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.2",
   "platforms": ["linux"],
   "runtime": {
     "linux": {
       "type": "container",
       "container": {
-        "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.1",
+        "image": "docker.io/piphinetwork/piphi-network-sonos:0.1.2",
         "network_mode": "host",
         "ports": [{"container": 8090, "host": 8090}],
         "environment": {"LOG_LEVEL": "info", "PIPHI_WIDGET_DIR": "/app/widgets"},
@@ -101,6 +101,7 @@
     "refresh": {"kind": "action"}, "play": {"kind": "action"},
     "pause": {"kind": "action"}, "stop": {"kind": "action"},
     "next": {"kind": "action"}, "previous": {"kind": "action"},
+    "play_media": {"kind": "action"},
     "set_volume": {"kind": "action"}, "set_mute": {"kind": "action"},
     "join_group": {"kind": "action"}, "leave_group": {"kind": "action"}
   },
@@ -111,6 +112,7 @@
     "stop": {"description": "Stop playback.", "timeout_ms": 10000},
     "next": {"description": "Skip to the next queue item.", "timeout_ms": 10000},
     "previous": {"description": "Return to the previous queue item.", "timeout_ms": 10000},
+    "play_media": {"description": "Play a signed PiPhi Library audio stream.", "timeout_ms": 15000},
     "set_volume": {"description": "Set volume from 0 to 100.", "timeout_ms": 10000},
     "set_mute": {"description": "Mute or unmute the speaker.", "timeout_ms": 10000},
     "join_group": {"description": "Join another Sonos coordinator by host.", "timeout_ms": 15000},
@@ -119,7 +121,7 @@
   "entities": [{
     "id": "sonos-speaker", "name": "Sonos speaker", "device_id": "sonos-speaker",
     "device_class": "speaker", "entity_type": "media_player",
-    "capabilities": ["connected", "playback_state", "volume_percent", "muted", "track_title", "artist", "album", "album_art_uri", "position_seconds", "duration_seconds", "group_id", "refresh", "play", "pause", "stop", "next", "previous", "set_volume", "set_mute", "join_group", "leave_group"],
+    "capabilities": ["connected", "playback_state", "volume_percent", "muted", "track_title", "artist", "album", "album_art_uri", "position_seconds", "duration_seconds", "group_id", "refresh", "play", "pause", "stop", "next", "previous", "play_media", "set_volume", "set_mute", "join_group", "leave_group"],
     "available_commands": [
       {"id": "refresh", "label": "Refresh speaker state", "kind": "action"},
       {"id": "play", "label": "Resume playback", "kind": "action"},
@@ -127,6 +129,7 @@
       {"id": "stop", "label": "Stop playback", "kind": "action"},
       {"id": "next", "label": "Skip to the next queue item", "kind": "action"},
       {"id": "previous", "label": "Return to the previous queue item", "kind": "action"},
+      {"id": "play_media", "label": "Play a signed PiPhi Library audio stream", "kind": "action"},
       {"id": "set_volume", "label": "Set volume from 0 to 100", "kind": "action"},
       {"id": "set_mute", "label": "Mute or unmute the speaker", "kind": "action"},
       {"id": "join_group", "label": "Join another Sonos coordinator by host", "kind": "action"},
@@ -142,6 +145,6 @@
     "value_kinds": ["text", "numeric", "boolean", "enum", "command"],
     "capability_requirements": ["playback_state", "volume_percent", "muted", "track_title", "artist", "album", "album_art_uri", "position_seconds", "duration_seconds"],
     "layout": {"min_height": 220, "default_height": 340, "max_height": 560},
-    "security": {"permissions": ["host.executeCommand"], "allowed_commands": ["play", "pause", "stop", "next", "previous", "set_volume", "set_mute", "refresh"], "sandbox": ["allow-scripts"], "csp": {"connect_src": []}}
+    "security": {"permissions": ["host.executeCommand"], "allowed_commands": ["play", "pause", "stop", "next", "previous", "play_media", "set_volume", "set_mute", "refresh"], "sandbox": ["allow-scripts"], "csp": {"connect_src": []}}
   }]}
 }

@@ -10,6 +10,7 @@ PiPhi runtime integration for discovering and controlling Sonos speakers on the 
 - Poll-based telemetry without inbound UPnP callback ports
 - Core contract, config-sync, automation command, and mock-device tests
 - Sandboxed “Sonos now playing” dashboard widget with explicit command permissions
+- Signed, short-lived PiPhi Media Library audio handoff through `play_media`
 
 ## Run locally
 
