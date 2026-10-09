@@ -32,6 +32,9 @@ class FakeSpeaker:
             if not 0 <= value <= 100:
                 raise ValueError("volume must be between 0 and 100")
             self.state["volume_percent"] = value
+        if name == "play_media":
+            self.state["playback_state"] = "playing"
+            self.state["track_title"] = str(params.get("title") or "Library audio")
 
 
 @pytest.mark.anyio
@@ -68,10 +71,23 @@ async def test_core_config_entities_state_and_commands_round_trip() -> None:
         assert command.status_code == 200
         assert command.json()["state"]["volume_percent"] == 42
 
+        media_command = await client.post("/command", json={
+            "contract_version": "automation.runtime.command.v1", "command": "play_media",
+            "target": {"config_id": "sonos-living-room", "device_id": "RINCON_0001"},
+            "params": {
+                "uri": "http://core.test/api/v2/media/library/stream/lib_track?expires=9999999999&signature=" + "a" * 64,
+                "source": "piphi-library", "mime_type": "audio/mpeg", "title": "Library Track",
+            },
+            "capability": "action.play_media",
+        })
+        assert media_command.status_code == 200
+        assert media_command.json()["state"]["track_title"] == "Library Track"
+
         state = (await client.get("/state")).json()
         assert state["state_snapshots"]["sonos-living-room"]["state"]["volume_percent"] == 42
 
-    assert created[0].commands == [("set_volume", {"volume": 42})]
+    assert created[0].commands[0] == ("set_volume", {"volume": 42})
+    assert created[0].commands[1][0] == "play_media"
     await service.close()
     registry.entries.clear()
     registry.state_snapshots.clear()

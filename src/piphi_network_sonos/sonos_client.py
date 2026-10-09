@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import asyncio
+import re
+import time
 from dataclasses import dataclass
 from typing import Any, Protocol
+from urllib.parse import parse_qs, urlsplit
 
 
 def _seconds(value: Any) -> int:
@@ -14,6 +17,42 @@ def _seconds(value: Any) -> int:
     for part in parts:
         total = total * 60 + part
     return total
+
+
+def _validate_library_media_uri(params: dict[str, Any]) -> tuple[str, str]:
+    if str(params.get("source") or "").strip() != "piphi-library":
+        raise ValueError("play_media only accepts PiPhi Library streams")
+    uri = str(params.get("uri") or "").strip()
+    if not uri or len(uri) > 4096:
+        raise ValueError("a valid PiPhi Library stream URI is required")
+    parsed = urlsplit(uri)
+    if (
+        parsed.scheme not in {"http", "https"}
+        or not parsed.hostname
+        or parsed.username
+        or parsed.password
+        or parsed.fragment
+        or not re.search(r"/api/[^/]+/media/library/stream/[^/]+$", parsed.path)
+    ):
+        raise ValueError("a valid PiPhi Library stream URI is required")
+    query = parse_qs(parsed.query)
+    expires_values = query.get("expires", [])
+    signatures = query.get("signature", [])
+    try:
+        expires_at = int(expires_values[0]) if len(expires_values) == 1 else 0
+    except (TypeError, ValueError):
+        expires_at = 0
+    signature = signatures[0] if len(signatures) == 1 else ""
+    now = int(time.time())
+    if expires_at < now or expires_at > now + 3600:
+        raise ValueError("PiPhi Library stream URI is expired")
+    if not re.fullmatch(r"[0-9a-f]{64}", signature):
+        raise ValueError("PiPhi Library stream URI signature is invalid")
+    mime_type = str(params.get("mime_type") or "").strip().lower()
+    if mime_type and not mime_type.startswith("audio/"):
+        raise ValueError("play_media only supports audio content")
+    title = str(params.get("title") or "").strip()[:512]
+    return uri, title
 
 
 @dataclass(frozen=True, slots=True)
@@ -78,6 +117,12 @@ class SoCoSpeakerClient:
         speaker = self._speaker
         if name in {"play", "pause", "stop", "next", "previous"}:
             getattr(speaker, name)()
+        elif name == "play_media":
+            uri, title = _validate_library_media_uri(params)
+            if title:
+                speaker.play_uri(uri, title=title)
+            else:
+                speaker.play_uri(uri)
         elif name == "set_volume":
             volume = int(params.get("volume", params.get("value", -1)))
             if not 0 <= volume <= 100:
